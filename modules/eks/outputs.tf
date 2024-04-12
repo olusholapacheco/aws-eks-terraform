@@ -27,3 +27,4 @@ output "eks_node_group_two_instance_ids" {
   description = "EC2 instance IDs of node group two"
   value       = aws_instance.eks_node_group_two_instance_ids[*].id
 }
+
