@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
       defaults:
        runs-on:
-        working-directory: ./modules/eks
+        working-directory: modules/eks
 
 
     steps:
