@@ -3,8 +3,8 @@ name: Deploy and Destroy EKS Clusters
 on:
   push:
     branches:
-      - 'cluster-1'
-      - 'cluster-2'
+      - 'Cluster-1'
+      - 'Cluster-2'
 
 jobs:
   deploy:
@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        cluster_branch: ['cluster-1', 'cluster-2']
+        cluster_branch: ['Cluster-1', 'Cluster-2']
 
     steps:
       - name: Checkout cluster branch
