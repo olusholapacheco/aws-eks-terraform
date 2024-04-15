@@ -11,7 +11,7 @@ variable "cluster_name" {
 }
 
 variable "cluster_version" {
-  description = "Kubernetes version. Defaults to EKS C
+  description = "Kubernetes version. Defaults to EKS Cluster"
   type        = string
   default     = "1.23"  
 }
@@ -22,9 +22,8 @@ variable "vpc_id" {
 }
 
 variable "subnet_ids" {
-  description = "List of subnet IDs from the default V
-  type = string
-  
+  description = "List of subnet IDs from the default VPC"
+  type = list(string)  
 }
 
 
