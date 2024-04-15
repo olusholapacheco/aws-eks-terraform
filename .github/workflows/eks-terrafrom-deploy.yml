@@ -22,22 +22,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Get VPC ID and Subnet IDs
-        id: get-vpc-subnets
+      - name: Deploy EKS Cluster 
         run: |
-          echo "::set-output name=vpc_id::${{ secrets.VPC_ID }}"
-          echo "::set-output name=subnet_ids::${{ secrets['SUBNET_IDS_' + matrix.cluster_branch.toUpperCase()] }}"
-
-      - name: Deploy EKS Cluster - ${{ matrix.cluster_branch }}
-        run: |
-          cd ${{ matrix.cluster_branch }}
           terraform init
-          terraform plan -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secrets['CLUSTER_VERSION_' + matrix.cluster_branch.toUpperCase()] }}" -var="vpc_id=${{ steps.get-vpc-subnets.outputs.vpc_id }}" -var="subnet_ids=${{ steps.get-vpc-subnets.outputs.subnet_ids }}"
-          terraform apply -auto-approve -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secrets['CLUSTER_VERSION_' + matrix.cluster_branch.toUpperCase()] }}" -var="vpc_id=${{ steps.get-vpc-subnets.outputs.vpc_id }}" -var="subnet_ids=${{ steps.get-vpc-subnets.outputs.subnet_ids }}"
+          terraform plan   
+          terraform apply 
 
-      - name: Destroy EKS Cluster - ${{ matrix.cluster_branch }}
+      - name: Destroy EKS Cluster 
         if: always()
         run: |
-          cd ${{ matrix.cluster_branch }}
           terraform init
-          terraform destroy -auto-approve -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secrets['CLUSTER_VERSION_' + matrix.cluster_branch.toUpperCase()] }}" -var="vpc_id=${{ steps.get-vpc-subnets.outputs.vpc_id }}" -var="subnet_ids=${{ steps.get-vpc-subnets.outputs.subnet_ids }}"
+          terraform destroy -auto-approve 
