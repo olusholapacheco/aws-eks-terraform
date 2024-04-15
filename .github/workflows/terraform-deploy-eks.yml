@@ -5,6 +5,7 @@ on:
     branches:
       - 'Cluster-1'
       - 'Cluster-2'
+  workflow_dispatch: 
 
 jobs:
   deploy:
