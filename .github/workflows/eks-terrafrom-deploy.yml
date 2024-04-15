@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-      defaults:
+       defaults:
        runs-on:
         working-directory: modules/eks
 
