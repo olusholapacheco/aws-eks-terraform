@@ -4,15 +4,14 @@ on:
   push:
     branches:
       - 'Cluster-1'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-      defaults:
-       run:
+    defaults:
+      run:
         working-directory: modules/eks
-
 
     steps:
       - name: Checkout cluster branch
@@ -36,3 +35,11 @@ jobs:
         run: |
           terraform init
           terraform destroy -auto-approve 
+
+
+
+
+
+
+
+
