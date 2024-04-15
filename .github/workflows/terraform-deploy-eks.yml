@@ -27,26 +27,22 @@ jobs:
           aws-secret-access-key: ${{ secrets['AWS_SECRET_ACCESS_KEY_' + matrix.cluster_branch.toUpperCase()] }}
           aws-region: us-east-1
 
-      - name: Get VPC ID for ${{ matrix.cluster_branch }}
-        id: get-vpc
+      - name: Get VPC ID and Subnet IDs
+        id: get-vpc-subnets
         run: |
           echo "::set-output name=vpc_id::${{ secrets.VPC_ID }}"
-
-      - name: Get Subnet IDs for ${{ matrix.cluster_branch }}
-        id: get-subnets
-        run: |
           echo "::set-output name=subnet_ids::${{ secrets['SUBNET_IDS_' + matrix.cluster_branch.toUpperCase()] }}"
 
       - name: Deploy EKS Cluster - ${{ matrix.cluster_branch }}
         run: |
           cd ${{ matrix.cluster_branch }}
           terraform init
-          terraform plan -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secr
-          terraform apply -auto-approve -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_v
+          terraform plan -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secrets['CLUSTER_VERSION_' + matrix.cluster_branch.toUpperCase()] }}" -var="vpc_id=${{ steps.get-vpc-subnets.outputs.vpc_id }}" -var="subnet_ids=${{ steps.get-vpc-subnets.outputs.subnet_ids }}"
+          terraform apply -auto-approve -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secrets['CLUSTER_VERSION_' + matrix.cluster_branch.toUpperCase()] }}" -var="vpc_id=${{ steps.get-vpc-subnets.outputs.vpc_id }}" -var="subnet_ids=${{ steps.get-vpc-subnets.outputs.subnet_ids }}"
 
       - name: Destroy EKS Cluster - ${{ matrix.cluster_branch }}
-        if: always()  
+        if: always()
         run: |
           cd ${{ matrix.cluster_branch }}
           terraform init
-          terraform destroy -auto-approve -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster
+          terraform destroy -auto-approve -var="cluster_name=${{ secrets['CLUSTER_NAME_' + matrix.cluster_branch.toUpperCase()] }}" -var="cluster_version=${{ secrets['CLUSTER_VERSION_' + matrix.cluster_branch.toUpperCase()] }}" -var="vpc_id=${{ steps.get-vpc-subnets.outputs.vpc_id }}" -var="subnet_ids=${{ steps.get-vpc-subnets.outputs.subnet_ids }}"
