@@ -23,7 +23,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "List of subnet IDs from the default VPC"
-  type = list(string)  
+  type = list
 }
 
 
