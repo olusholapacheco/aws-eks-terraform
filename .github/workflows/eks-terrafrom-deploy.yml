@@ -14,10 +14,10 @@ jobs:
         working-directory: modules/eks
 
     env:
-      CLUSTER_NAME: ${{ CLUSTER_NAME_CLUSTER_1 }}
-      CLUSTER_VERSION: ${{ CLUSTER_VERSION_CLUSTER_1 }}
-      SUBNET_IDS: ${{ SUBNET_IDS_CLUSTER_1 }}
-      VPC_ID: ${{ VPC_ID }}
+      CLUSTER_NAME: ${{ github.event.client_payload.CLUSTER_NAME_CLUSTER_1 }}
+      CLUSTER_VERSION: ${{ github.event.client_payload.CLUSTER_VERSION_CLUSTER_1 }}
+      SUBNET_IDS: ${{ github.event.client_payload.SUBNET_IDS_CLUSTER_1 }}
+      VPC_ID: ${{ secrets.VPC_ID }}
 
     steps:
       - name: Checkout cluster branch
