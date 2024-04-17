@@ -14,8 +14,10 @@ jobs:
         working-directory: modules/eks
 
     env:
-      VPC_ID: ${{ github.repository }}_VPC_ID
-      SUBNET_IDS: ${{ github.repository }}_SUBNET_IDS
+      CLUSTER_NAME: ${{ env.CLUSTER_NAME_CLUSTER_1 }}
+      CLUSTER_VERSION: ${{ env.CLUSTER_VERSION_CLUSTER_1 }}
+      SUBNET_IDS: ${{ secrets.SUBNET_IDS_CLUSTER_1 }}
+      VPC_ID: ${{ env.VPC_ID }}
 
     steps:
       - name: Checkout cluster branch
@@ -36,19 +38,11 @@ jobs:
       - name: Deploy EKS Cluster 
         run: |
           terraform init
-          terraform plan -var="vpc_id=${VPC_ID}" -var="subnet_ids=${SUBNET_IDS}" -lock=false
-          terraform apply -var="vpc_id=${VPC_ID}" -var="subnet_ids=${SUBNET_IDS}" -auto-approve
+          terraform plan -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -var="vpc_id=${VPC_ID}" -lock=false
+          terraform apply -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -var="vpc_id=${VPC_ID}" -auto-approve
 
       - name: Destroy EKS Cluster 
         if: always()
         run: |
           terraform init
-          terraform destroy -var="vpc_id=${VPC_ID}" -var="subnet_ids=${SUBNET_IDS}" -auto-approve
-
-
-
-
-
-
-
-
+          terraform destroy -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -var="vpc_id=${VPC_ID}" -auto-approve
