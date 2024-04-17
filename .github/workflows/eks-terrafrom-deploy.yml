@@ -1,4 +1,4 @@
-name: Deploy and Destroy EKS Clusters
+name: Deploy and Destroy EKS Cluster
 
 on:
   push:
@@ -14,10 +14,10 @@ jobs:
         working-directory: modules/eks
 
     env:
-      CLUSTER_NAME: ${{ github.event.client_payload.CLUSTER_NAME_CLUSTER_1 }}
-      CLUSTER_VERSION: ${{ github.event.client_payload.CLUSTER_VERSION_CLUSTER_1 }}
-      SUBNET_IDS: ${{ github.event.client_payload.SUBNET_IDS_CLUSTER_1 }}
-      VPC_ID: ${{ secrets.VPC_ID }}
+      VPC_ID: ${{ github.workspace }}/VPC_ID
+      CLUSTER_NAME: ${{ github.workspace }}/CLUSTER_NAME_CLUSTER_1
+      CLUSTER_VERSION: ${{ github.workspace }}/CLUSTER_VERSION_CLUSTER_1
+      SUBNET_IDS: ${{ github.workspace }}/SUBNET_IDS_CLUSTER_1
 
     steps:
       - name: Checkout cluster branch
@@ -38,11 +38,11 @@ jobs:
       - name: Deploy EKS Cluster 
         run: |
           terraform init
-          terraform plan -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -var="vpc_id=${VPC_ID}" -lock=false
-          terraform apply -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -var="vpc_id=${VPC_ID}" -auto-approve
+          terraform plan -var="vpc_id=${VPC_ID}" -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -lock=false
+          terraform apply -var="vpc_id=${VPC_ID}" -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -auto-approve
 
       - name: Destroy EKS Cluster 
         if: always()
         run: |
           terraform init
-          terraform destroy -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -var="vpc_id=${VPC_ID}" -auto-approve
+          terraform destroy -var="vpc_id=${VPC_ID}" -var="cluster_name=${CLUSTER_NAME}" -var="cluster_version=${CLUSTER_VERSION}" -var="subnet_ids=${SUBNET_IDS}" -auto-approve
