@@ -20,11 +20,3 @@ variable "vpc_id" {
   description = "ID of Default AWS VPC"
   type        = string
 }
-
-variable "subnet_ids" {
-  description = "List of subnet IDs from the Default VPC"
-  type = string
-  
-}
-
-
