@@ -1,15 +1,17 @@
-name: Deploy and Destroy EKS Clusters
+name: Deploy and Destroy EKS Cluster
 
 on:
   push:
     branches:
       - 'Cluster-2'
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: modules/eks
 
     steps:
       - name: Checkout cluster branch
@@ -21,18 +23,20 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-          
-      - name: Change to modules/eks directory
-        run: cd modules/eks
 
-      - name: Deploy EKS Cluster 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Deploy EKS Cluster
         run: |
           terraform init
-          terraform plan   
-          terraform apply 
+          terraform plan -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_2 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_2 }}" -lock=false
+          terraform apply -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_2 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_2 }}" -auto-approve
 
-      - name: Destroy EKS Cluster 
+      - name: Destroy EKS Cluster
         if: always()
         run: |
           terraform init
-          terraform destroy -auto-approve 
+          terraform destroy -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_2 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_2 }}" -auto-approve
