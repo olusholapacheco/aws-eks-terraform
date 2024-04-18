@@ -31,7 +31,7 @@ jobs:
 
       - name: Deploy EKS Cluster
         run: |
-          terraform init -reconfigure
+          terraform init 
           terraform plan -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -lock=false
           terraform apply -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -auto-approve
 
