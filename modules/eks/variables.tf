@@ -7,7 +7,7 @@ variable "region" {
 variable "cluster_name" {
   description = "Name of associated EKS Cluster"
   type        = string 
-  default     = "Cluster1"
+  default     = "Cluster2"
 }
 
 variable "cluster_version" {
