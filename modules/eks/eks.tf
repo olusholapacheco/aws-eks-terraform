@@ -22,8 +22,8 @@ module "eks" {
     }
 
     two = {
-      name         = "node-group-4"
       instance_type = ["t3.medium"]
+      name         = "node-group-4"
       min_size     = 1
       max_size     = 2
       desired_size = 1
