@@ -31,6 +31,26 @@ module "eks" {
   }
 }
 
+# nginx_ingress.tf
+
+# Define the namespace using Kubernetes manifest
+resource "kubernetes_namespace" "nginx_ingress" {
+  metadata {
+    name = "nginx-ingress"
+  }
+}
+
+resource "helm_release" "nginx_ingress_controller" {
+  name       = "nginx-ingress-controller"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx-ingress-controller"
+  namespace  = kubernetes_namespace.nginx_ingress.metadata[0].name
+
+  set {
+    name  = "ingressClass"
+    value = "learn"
+  }
+}
 
 
 
