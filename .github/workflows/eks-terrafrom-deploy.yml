@@ -56,3 +56,9 @@ jobs:
           terraform plan -target=helm_release.nginx_ingress -out=nginx_ingress_plan.out
           terraform apply nginx_ingress_plan.out
 
+      - name: Destroy EKS Cluster
+        if: always()
+        run: |
+          terraform init
+          terraform destroy -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -auto-approve
+
