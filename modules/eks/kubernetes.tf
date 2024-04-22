@@ -3,7 +3,7 @@ provider "kubernetes" {
   config_context = "arn:aws:eks:us-east-1:${data.aws_caller_identity.current.account_id}:cluster/Cluster-1"
 }
 
-data "aws_caller_identity" "current" {} #retrieves account ID and passes value to the above
+data "aws_caller_identity" "current" {} #retrieves account ID and passes value to the above - basically aws sts get-caller-identity
 
 resource "kubernetes_namespace" "nginx" {
   metadata {
