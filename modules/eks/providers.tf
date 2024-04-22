@@ -11,3 +11,13 @@ terraform {
     }
   }
 }
+
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+}
+resource "kubernetes_namespace" "nginx" {
+  metadata {
+    name = "nginx-ingress"
+  }
+}
+
