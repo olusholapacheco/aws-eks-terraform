@@ -28,9 +28,6 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
-      
-      - name: Force unlock state
-        run: terraform force-unlock 6c9a8378-98a3-e98b-50c9-490db7df31ab
 
       - name: Deploy EKS Cluster
         run: |
