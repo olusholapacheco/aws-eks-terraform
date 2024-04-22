@@ -29,11 +29,11 @@ jobs:
         with:
           terraform_version: 1.0.0
 
-      - name: Deploy EKS Cluster
+      - name: Set up Kubernetes environment variables
         run: |
-          terraform init 
-          terraform plan -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" 
-          terraform apply -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -auto-approve
+          echo "::set-env name=KUBE_CA_CERTIFICATE::${{ secrets.KUBE_CA_CERTIFICATE }}"
+          echo "::set-env name=KUBE_TOKEN::${{ secrets.AWS_EKS_CLUSTER_TOKEN }}"
+          echo "::set-env name=KUBE_HOST::${{ secrets.KUBE_HOST }}"
 
       - name: Create Namespace
         run: |
