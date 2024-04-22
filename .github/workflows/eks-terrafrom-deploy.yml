@@ -1,4 +1,4 @@
-name: Deploy EKS Cluster
+name: Deploy and Destroy EKS Cluster
 
 on:
   push:
@@ -32,33 +32,5 @@ jobs:
       - name: Deploy EKS Cluster
         run: |
           terraform init
-          terraform plan -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -lock=false
+          terraform plan -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" 
           terraform apply -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -auto-approve
-
-      - name: Create environment file
-        run: |
-          echo "KUBE_CA_CERTIFICATE=${{ secrets.KUBE_CA_CERTIFICATE }}" > env.txt
-          echo "KUBE_TOKEN=${{ secrets.AWS_EKS_CLUSTER_TOKEN }}" >> env.txt
-          echo "KUBE_HOST=${{ secrets.KUBE_HOST }}" >> env.txt
-
-      - name: Set environment variables
-        run: |
-          export $(cat env.txt)
-
-      - name: Create Namespace
-        run: |
-          terraform init
-          terraform plan -target=kubernetes_namespace.nginx -out=namespace_plan.out
-          terraform apply namespace_plan.out
-
-      - name: Deploy NGINX Ingress Controller
-        run: |
-          terraform plan -target=helm_release.nginx_ingress -out=nginx_ingress_plan.out
-          terraform apply nginx_ingress_plan.out
-
-      - name: Destroy EKS Cluster
-        if: always()
-        run: |
-          terraform init
-          terraform destroy -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -auto-approve
-
