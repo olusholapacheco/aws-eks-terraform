@@ -29,11 +29,15 @@ jobs:
         with:
           terraform_version: 1.0.0
 
-      - name: Set up Kubernetes environment variables
+      - name: Create environment file
         run: |
-          echo "::set-env name=KUBE_CA_CERTIFICATE::${{ secrets.KUBE_CA_CERTIFICATE }}"
-          echo "::set-env name=KUBE_TOKEN::${{ secrets.AWS_EKS_CLUSTER_TOKEN }}"
-          echo "::set-env name=KUBE_HOST::${{ secrets.KUBE_HOST }}"
+          echo "KUBE_CA_CERTIFICATE=${{ secrets.KUBE_CA_CERTIFICATE }}" > env.txt
+          echo "KUBE_TOKEN=${{ secrets.AWS_EKS_CLUSTER_TOKEN }}" >> env.txt
+          echo "KUBE_HOST=${{ secrets.KUBE_HOST }}" >> env.txt
+
+      - name: Set environment variables
+        run: |
+          export $(cat env.txt)
 
       - name: Create Namespace
         run: |
