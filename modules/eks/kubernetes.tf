@@ -24,7 +24,7 @@ resource "helm_release" "nginx_ingress" {
   namespace  = kubernetes_namespace.nginx.metadata[0].name
 
   set {
-    name  = "controller.ingressClassName"
+    name  = "controller.ingressClassResource.name"
     value = "learn"
   }
 }
