@@ -29,3 +29,12 @@ resource "helm_release" "nginx_ingress" {
   }
 }
 
+
+
+resource "aws_eks_cluster" "Cluster-1" {  #diable logging 
+  name          = "Cluster-1"
+  role_arn      = "arn:aws:iam::960509790187:role/Cluster-1-cluster-20240425114237968200000005"
+  version       = "1.23"
+
+  enabled_cluster_log_types = []
+}
