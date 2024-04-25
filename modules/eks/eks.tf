@@ -33,7 +33,7 @@ module "eks" {
 
 
 resource "aws_cloudwatch_log_group" "Cluster-1_eks_cluster_log_group" {
-  name              = "/aws/eks/Cluster-1/cluster"
+  name              = "/aws/eks/Cluster-1/cluster1"
   retention_in_days = 0  # Set retention value to not keep logs for now
   
 }
