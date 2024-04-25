@@ -30,3 +30,12 @@ resource "helm_release" "nginx_ingress" {
 }
 
 
+resource "aws_eks_cluster" "Cluster-1" {
+  # ... other properties ...
+
+  logging {
+    cluster_logging {
+      enabled = false
+    }
+  }
+}
