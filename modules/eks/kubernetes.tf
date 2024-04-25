@@ -28,3 +28,8 @@ resource "helm_release" "nginx_ingress" {
     value = "learn"
   }
 }
+
+resource "aws_cloudwatch_log_group" "Cluster-1_eks_cluster_log_group" {  # setting cloudwatch to not keep logs for now
+  name              = "/aws/eks/Cluster-1/cluster"
+  retention_in_days = 0
+}
