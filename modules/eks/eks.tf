@@ -14,7 +14,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     one = {
-      instance_type = ["t3.medium"] 
+      instance_type = ["t2.micro"] 
       name         = "node-group-1"
       min_size     = 2
       max_size     = 3
@@ -23,7 +23,7 @@ module "eks" {
 
     two = {
       name         = "node-group-2"
-      instance_type = ["t3.medium"]
+      instance_type = ["t2.micro"]
       min_size     = 1
       max_size     = 2
       desired_size = 1
