@@ -41,7 +41,9 @@ jobs:
  
       - name: Get IAM Policy ARN
         id: get_policy_arn
-        run: echo "::set-output name=policy_arn::$(terraform output -raw policy_arn)"
+        run: |
+          policy_arn=$(terraform output -raw policy_arn)
+          echo "::set-output name=policy_arn::$policy_arn"
 
       - name: Display IAM Policy ARN
         run: echo "IAM Policy ARN: ${{ steps.get_policy_arn.outputs.policy_arn }}"
