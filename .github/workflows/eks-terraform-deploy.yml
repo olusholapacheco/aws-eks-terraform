@@ -39,3 +39,9 @@ jobs:
           terraform plan -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" 
           terraform apply -var "vpc_id=${{ vars.VPC_ID }}" -var "cluster_name=${{ vars.CLUSTER_NAME_CLUSTER_1 }}" -var "cluster_version=${{ vars.CLUSTER_VERSION_CLUSTER_1 }}" -auto-approve
  
+      - name: Get IAM Policy ARN
+        id: get_policy_arn
+        run: echo "::set-output name=policy_arn::$(terraform output -raw policy_arn)"
+
+      - name: Display IAM Policy ARN
+        run: echo "IAM Policy ARN: ${{ steps.get_policy_arn.outputs.policy_arn }}"
