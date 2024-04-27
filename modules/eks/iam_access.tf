@@ -8,7 +8,7 @@ resource "aws_iam_policy" "eks_readonly_policy" {
       {
         Effect   = "Allow",
         Action   = [
-          "eks:ListPods",    # Added action to list pods
+          "eks:ListPods",
           "eks:DescribeCluster",
           "eks:ListClusters",
           "eks:DescribeNodegroup",
@@ -28,18 +28,19 @@ resource "aws_iam_policy" "eks_readonly_policy" {
           "eks:DescribeCluster"
         ],
         Resource = "*"
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "eks:ListPods"
+        ],
+        Resource = "*",
+        Condition = {
+          StringEquals = {
+            "resource/namespace" = "nginx-ingress"
+          }
+        }
       }
     ]
   })
-}
-
-
-resource "aws_iam_user_policy_attachment" "eks_user_readonly_attachment" {  # This attaches the above policy
-  user       = "audit"  
-  policy_arn = aws_iam_policy.eks_readonly_policy.arn
-}
-
-
-output "policy_arn" {   # outputs the aws policy ARN
-  value = aws_iam_policy.eks_readonly_policy.arn
 }
