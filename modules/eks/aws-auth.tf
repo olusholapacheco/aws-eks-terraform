@@ -1,6 +1,6 @@
 module "eks_auth" {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
-  version = "~> 2.20"
+  version = "~> 1.32"
 
   manage_aws_auth_configmap = true
 
