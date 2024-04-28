@@ -14,4 +14,3 @@ resource "kubernetes_cluster_role_binding" "eks_readonly_group_binding" {
     name    = kubernetes_group.eks_readonly_group.metadata[0].name
   }
 }
-
