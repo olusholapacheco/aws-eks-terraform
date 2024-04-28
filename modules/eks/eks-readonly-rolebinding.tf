@@ -1,17 +1,17 @@
-resource "kubernetes_role_binding" "eks_readonly_role_binding" {
+resource "kubernetes_cluster_role_binding" "eks_readonly_group_binding" {
   metadata {
-    name      = "eks-readonly-rolebinding"
-    namespace = "nginx-ingress"
-  }
-
-  subject {
-    kind = "User"
-    name = "audit"
+    name = "eks-readonly-group-binding"
   }
 
   role_ref {
-    kind     = "Role"
-    name     = kubernetes_role.eks_readonly_role.metadata[0].name
+    kind     = "ClusterRole"
+    name     = kubernetes_cluster_role.eks_readonly_cluster_role.metadata[0].name
     api_group = "rbac.authorization.k8s.io"
   }
+
+  subject {
+    kind    = "Group"
+    name    = kubernetes_group.eks_readonly_group.metadata[0].name
+  }
 }
+
