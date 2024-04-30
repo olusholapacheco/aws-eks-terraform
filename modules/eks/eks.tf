@@ -38,10 +38,7 @@ resource "aws_cloudwatch_log_group" "Cluster-1_eks_cluster_log_group" {
   
 }
 
-resource "aws_eks_cluster" "Cluster-1" {     # Turn off eks cluster logging to save cost as every api server, audit and authenticator will be logged for now
-  # ... other configurations ...
-
-  logging {
+  logging {       # Turn off eks cluster logging to save cost as every api server, audit and authenticator will be logged for now
     cluster_logging {
       enabled = false
     }
