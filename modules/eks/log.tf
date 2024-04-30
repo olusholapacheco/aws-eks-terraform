@@ -5,10 +5,6 @@ resource "aws_eks_cluster" "Cluster-1" {
   vpc_config {
     subnet_ids = ["subnet-08ba09b2f0fe304ce", "subnet-0b6dcafd6c9d2e499", "subnet-042b894f03eac2ff2"]
   }
-}
-
-resource "aws_eks_cluster_update" "Cluster-1" {
-  name = var.cluster_name
 
   logging {
     cluster_logging {
