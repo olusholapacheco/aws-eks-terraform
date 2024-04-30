@@ -43,4 +43,3 @@ resource "aws_cloudwatch_log_group" "Cluster-1_eks_cluster_log_group" {
       enabled = false
     }
   }
-} 
